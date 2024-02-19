@@ -1,0 +1,15 @@
+{
+  "id": "ty4ZxqNuiET8pzaP68973",
+  "command": [
+    "book",
+    "-m",
+    "Main"
+  ],
+  "pid": 68973,
+  "download_bytes": 0,
+  "upload_bytes": 0,
+  "start_time": "2024-02-05T02:14:41.606757Z",
+  "end_time": "2024-02-05T02:14:41.817816Z",
+  "exit_code": 255,
+  "progress": []
+}

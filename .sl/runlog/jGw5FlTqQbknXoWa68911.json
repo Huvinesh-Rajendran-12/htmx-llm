@@ -1,0 +1,13 @@
+{
+  "id": "jGw5FlTqQbknXoWa68911",
+  "command": [
+    "smartlog"
+  ],
+  "pid": 68911,
+  "download_bytes": 0,
+  "upload_bytes": 0,
+  "start_time": "2024-02-05T02:12:17.103603Z",
+  "end_time": "2024-02-05T02:12:17.559790Z",
+  "exit_code": 0,
+  "progress": []
+}

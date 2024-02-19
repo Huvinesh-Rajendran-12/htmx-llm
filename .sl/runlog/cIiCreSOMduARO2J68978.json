@@ -1,0 +1,14 @@
+{
+  "id": "cIiCreSOMduARO2J68978",
+  "command": [
+    "book",
+    "--help"
+  ],
+  "pid": 68978,
+  "download_bytes": 0,
+  "upload_bytes": 0,
+  "start_time": "2024-02-05T02:14:49.844024Z",
+  "end_time": "2024-02-05T02:14:50.010977Z",
+  "exit_code": 0,
+  "progress": []
+}

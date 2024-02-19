@@ -1,0 +1,14 @@
+{
+  "id": "UMp75KBJcSjlOqGm68758",
+  "command": [
+    "add",
+    "."
+  ],
+  "pid": 68758,
+  "download_bytes": 0,
+  "upload_bytes": 0,
+  "start_time": "2024-02-05T02:10:51.580374Z",
+  "end_time": "2024-02-05T02:10:51.797034Z",
+  "exit_code": 0,
+  "progress": []
+}
