@@ -21,7 +21,6 @@
     <script src="https://unpkg.com/htmx.org/dist/ext/sse.js"></script>
 
 </head>
-
 <body class="flex w-full bg-gray-700">
 
     <main id="mainDiv" class="flex flex-col w-full pb-16 justify-start items-center">
@@ -34,12 +33,11 @@
             hx-swap="beforeend"
             class="rounded-2xl w-full md:w-3/4 lg:w-1/2 p-4 mb-16"
         >
-        </ul>
-        
-        <form id="chat" class="flex max-h-16 fixed bottom-6 justify-center items-center w-full " hx-post='/chat_submit'
+        </ul>   
+            <form id="chat" class="flex max-h-16 fixed bottom-6 justify-center items-center w-full " hx-post='/chat_submit/{{session_id}}'
             hx-target="#chat_responses" hx-swap="beforeend" 
             hx-trigger="click from:#submitButton" 
-            hx-on="htmx:beforeRequest: htmx.find('#chat_responses').innerHTML += `<li class='text-white p-4 m-2 shadow-md rounded bg-gray-600 text-sm'><strong>{{ username }}</strong> : ${htmx.find('#user_input').value}</li>`; 
+            hx-on="htmx:beforeRequest: htmx.find('#chat_responses').innerHTML += `<li class='text-white p-4 m-2 shadow-md rounded bg-gray-600 text-sm'><strong>{{ username }}</strong> : ${htmx.find('#user_input').value}</li>`;
             
             htmx.find('#user_input').value=''; 
             htmx.find('#user_input').placeholder='Send a message'; 
@@ -71,5 +69,4 @@
         });
     </script>
 </body>
-
 </html>

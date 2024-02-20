@@ -5,14 +5,18 @@ from prompts import AssistantPrompt
 import requests
 from models import *
 import uuid
+import os
+import json
 
 
 USERNAME = "Teleme"
 AI_NAME = "Teleme AI"
-model_path = "phi-2.Q4_K_M.gguf"
+model_path = "phi2"
 message_queue = queue.Queue()
 messages  = [{"role":"system", "content":"You are a friendly healthcare assistant."}]
 STREAM = True
+
+AI_CHATBOT_URL = os.getenv("AI_CHATBOT_URL", "http://127.0.0.1:8080/v1/chat/completions")
 
 
 app:"Flask" = Flask(__name__)
@@ -38,16 +42,19 @@ def chat_response(user_input:str, session_id:str):
         message_window = 15
         messages_string = messages[-message_window:]
         prompt = AssistantPrompt.format(user_input=user_input, messages=messages_string, ai_name=AI_NAME, username=USERNAME)
-        res = requests.post(url="", stream=STREAM, data=data)
+        res = requests.post(url=AI_CHATBOT_URL, stream=STREAM, data=json.dumps(data))
         message = ""
         for word in res.iter_content(chunk_size=5000, decode_unicode=True):     
-            message += word
-            print(word)
-            yield(word)
+            if word.strip()[6:] != "[DONE]":
+                json_response = json.loads(s=word[6:])
+                print(json_response)
+                if 'content' in json_response['choices'][0]['delta']:
+                    content = json_response['choices'][0]['delta']['content']
+                    message += content
+                    print(content)
+                    yield(content)
 
-        messages.append({"role":"user", "content": f"{user_input}"})
-        messages.append({"role":"assistant", "content": f"{message}"})
-        create_conversation(user_prompt=user_input, llm_response=message)
+        create_conversation(llm_response=message, session_id=session_id)
 
     except Exception as e:
         response = f"Could not process response.\n\n{e}"
@@ -58,18 +65,25 @@ def chat_response(user_input:str, session_id:str):
 def index():
     messages.clear()
     session_id = uuid.uuid4().hex 
-    return render_template("index.html", username=USERNAME, ai_name=AI_NAME, session_id=session_id)
+    conversations = get_session_conversation(session_id=session_id)
+    return render_template("index.html", username=USERNAME, ai_name=AI_NAME, session_id=session_id, conversations=conversations)
 
-@app.route("/chat_submit/", methods=["POST"])
-def chat_input():
+@app.route("/admin")
+def admin():
+    messages.clear()
+    return render_template("admin.html", username=USERNAME, ai_name=AI_NAME)
+
+@app.route("/chat_submit/<session_id>", methods=["POST"])
+def chat_input(session_id:str):
     user_input = request.form.get("user_input")
+    print(session_id)
     if not user_input:
         ai_response = "Error: Please Enter a Valid Input"
         current_response_id = f"gptblock{randint(67, 999999)}"
         return render_template("ai_response.html", ai_name=AI_NAME, ai_response=ai_response, hx_swap=False, current_response_id=current_response_id )
     
     message_queue.put(user_input)
-
+    create_user_input(user_prompt=user_input, session_id=session_id)
     return "Success", 204 
 
 @app.route('/stream/<session_id>')
