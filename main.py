@@ -31,8 +31,8 @@ def chat_response(user_input:str, session_id:str):
     message_list = get_session_conversation(session_id=session_id)
     for message in message_list:
         messages.append({'role':'user', 'content': message[4]})
-        messages.append({'role':'assistant', 'content': message[5]})
-    messages.append({'role': 'user', 'content': user_input})
+        if message[5] != "":
+            messages.append({'role':'assistant', 'content': message[5]})
     print(messages)
     try:
         data = {
@@ -83,8 +83,8 @@ def chat_input(session_id:str):
         current_response_id = f"gptblock{randint(67, 999999)}"
         return render_template("ai_response.html", ai_name=AI_NAME, ai_response=ai_response, hx_swap=False, current_response_id=current_response_id )
     
-    message_queue.put(user_input)
     create_user_input(user_prompt=user_input, session_id=session_id)
+    message_queue.put(user_input)
     return "Success", 204 
 
 @app.route('/stream/<session_id>')
