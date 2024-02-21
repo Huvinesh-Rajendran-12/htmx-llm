@@ -24,7 +24,7 @@ class Conversation:
 def create_user_input(user_prompt:str , session_id:str):
     conn = sqlite3.connect("telemechatbot.db")
     cursor = conn.cursor()
-    cursor.execute("insert into conversations (session_id ,user_prompt) values (?,?)", (user_prompt, session_id,))
+    cursor.execute("insert into conversations (session_id ,user_prompt) values (?,?)", (session_id, user_prompt, ))
     conn.commit()
     cursor.close()
     conn.close()
