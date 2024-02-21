@@ -31,6 +31,7 @@ def create_user_input(user_prompt:str , session_id:str):
 
 
 def update_conversation(llm_response:str, session_id:str):
+    print(session_id)
     conn = sqlite3.connect("telemechatbot.db")
     select_query = "SELECT * FROM conversations WHERE session_id = ? ORDER BY created_at  DESC LIMIT 1"
     cursor = conn.cursor()
