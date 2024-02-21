@@ -30,8 +30,8 @@ def chat_response(user_input:str, session_id:str):
     #stop_words = [f"{AI_NAME}:", f"{USERNAME}:", "</s>"]
     message_list = get_session_conversation(session_id=session_id)
     for message in message_list:
-        messages.append({'role':'user', 'content': message.user_prompt})
-        messages.append({'role':'assistant', 'content': message.llm_response})
+        messages.append({'role':'user', 'content': message[4]})
+        messages.append({'role':'assistant', 'content': message[5]})
     messages.append({'role': 'user', 'content': user_input})
     print(messages)
     try:

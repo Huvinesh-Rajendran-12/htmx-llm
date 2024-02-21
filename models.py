@@ -32,7 +32,7 @@ def update_conversation(llm_response:str, session_id:str):
     select_query = "SELECT * FROM conversations WHERE session_id = ? ORDER BY created_at  DESC LIMIT 1"
     cursor = conn.cursor()
     cursor.execute(select_query, (session_id,))
-    latest_record : Conversation = cursor.fetchone()
+    latest_record = cursor.fetchone()
     print(latest_record)
     if latest_record:
         id = latest_record[0]
@@ -42,11 +42,11 @@ def update_conversation(llm_response:str, session_id:str):
     cursor.close()
     conn.close()
     
-def get_all_conversations() -> list[Conversation]:
+def get_all_conversations():
     conn = sqlite3.connect("telemechatbot.db")
     cursor = conn.cursor()
     cursor.execute("select * from conversations")
-    conversations : list[Conversation] = cursor.fetchall()
+    conversations = cursor.fetchall()
     conn.commit()
     cursor.close()
     conn.close()
@@ -61,11 +61,11 @@ def update_feedback(ratings:int, feedback:str, session_id:str):
     conn.close()
 
      
-def get_session_conversation(session_id:str) -> list[Conversation]:
+def get_session_conversation(session_id:str):
     conn = sqlite3.connect("telemechatbot.db")
     cursor = conn.cursor()
     cursor.execute("select * from conversations where session_id = ?", (session_id,))
-    conversation : list[Conversation]= cursor.fetchall()
+    conversation = cursor.fetchall()
     conn.commit()
     cursor.close()
     conn.close()
