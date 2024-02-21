@@ -11,6 +11,8 @@ class Admin:
 @dataclass
 class Conversation:
     id: int
+    created_at:str
+    updated_at:str
     session_id:str
     user_prompt: str
     llm_response: str
@@ -24,23 +26,29 @@ def create_user_input(user_prompt:str , session_id:str):
     cursor = conn.cursor()
     cursor.execute("insert into conversations (session_id ,user_prompt) values (?,?)", (user_prompt, session_id,))
     conn.commit()
+    cursor.close()
     conn.close()
 
 
-def create_conversation(llm_response:str, session_id:str):
+def update_conversation(llm_response:str, session_id:str):
     conn = sqlite3.connect("telemechatbot.db")
+    select_query = "SELECT * FROM conversations WHERE session_id = ? ORDER BY created_at  DESC LIMIT 1"
     cursor = conn.cursor()
-    cursor.execute("UPDATE conversations SET llm_response = ? WHERE session_id = ?", (llm_response, session_id))
-    conn.commit()
+    cursor.execute(select_query, (session_id,))
+    latest_record : Conversation = cursor.fetchone()
+    if latest_record:
+        cursor.execute("UPDATE conversations SET llm_response = ? WHERE id = ?", (llm_response, latest_record.id))
+        conn.commit()
+    cursor.close()
     conn.close()
     
- 
 def get_all_conversations() -> list[Conversation]:
     conn = sqlite3.connect("telemechatbot.db")
     cursor = conn.cursor()
     cursor.execute("select * from conversations")
     conversations : list[Conversation] = cursor.fetchall()
     conn.commit()
+    cursor.close()
     conn.close()
     return conversations
     
@@ -49,6 +57,7 @@ def update_feedback(ratings:int, feedback:str, session_id:str):
     cursor = conn.cursor()
     cursor.execute("update conversations set ratings = ? , user_feedback = ? where session_id = ?", (ratings, feedback, session_id,))
     conn.commit()
+    cursor.close()
     conn.close()
 
      
@@ -58,5 +67,6 @@ def get_session_conversation(session_id:str) -> list[Conversation]:
     cursor.execute("select * from conversations where session_id = ?", (session_id,))
     conversation : list[Conversation]= cursor.fetchall()
     conn.commit()
+    cursor.close()
     conn.close()
     return conversation
