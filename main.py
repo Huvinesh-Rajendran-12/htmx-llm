@@ -124,4 +124,4 @@ def stream(session_id:str):
     return app.response_class(stream_with_context(message_stream()), mimetype='text/event-stream')
 
 if __name__ == "__main__":
-    app.run(debug=True, port=9898)
+    app.run(host='0.0.0.0', port=9898)
