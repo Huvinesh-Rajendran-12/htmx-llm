@@ -11,7 +11,7 @@ import json
 
 USERNAME = "Teleme"
 AI_NAME = "Teleme AI"
-model_path = "phi2"
+model_path = "TheBloke/medicine-chat-AWQ"
 message_queue = queue.Queue()
 messages  = [{"role":"system", "content":"You are a friendly healthcare assistant."}]
 STREAM = True
@@ -124,4 +124,4 @@ def stream(session_id:str):
     return app.response_class(stream_with_context(message_stream()), mimetype='text/event-stream')
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=9898)
+    app.run(debug=True, port=9898)
