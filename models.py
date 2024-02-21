@@ -39,7 +39,9 @@ def update_conversation(llm_response:str, session_id:str):
     latest_record : Conversation = cursor.fetchone()
     print(latest_record)
     if latest_record:
-        cursor.execute("UPDATE conversations SET llm_response = ? WHERE id = ?", (llm_response, latest_record.id, ))
+        id = latest_record.id
+        print(id)
+        cursor.execute("UPDATE conversations SET llm_response = ? WHERE id = ?", (llm_response, id, ))
         conn.commit()
     cursor.close()
     conn.close()
