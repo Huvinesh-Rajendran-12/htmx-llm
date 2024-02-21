@@ -18,7 +18,7 @@ class Conversation:
     llm_response: str
     ratings: int
     message_feedback: str
-    time_taken: int
+    time_taken: float
 
 
 def create_user_input(user_prompt:str , session_id:str):

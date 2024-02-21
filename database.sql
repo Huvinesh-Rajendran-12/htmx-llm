@@ -1,6 +1,8 @@
 
 CREATE TABLE conversations (
   id SERIAL PRIMARY KEY,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   session_id VARCHAR(255),
   user_prompt TEXT DEFAULT "",
   llm_response TEXT DEFAULT "",

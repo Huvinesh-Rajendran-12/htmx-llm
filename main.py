@@ -54,7 +54,6 @@ def chat_response(user_input:str, session_id:str):
                     print(content)
                     yield(content)
 
-        create_conversation(llm_response=message, session_id=session_id)
 
     except Exception as e:
         response = f"Could not process response.\n\n{e}"
@@ -120,6 +119,7 @@ def stream(session_id:str):
                     except Exception as e:
                         print(e)
                         return e
+                update_conversation(llm_response=message, session_id=session_id)
                     
     return app.response_class(stream_with_context(message_stream()), mimetype='text/event-stream')
 
